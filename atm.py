@@ -1,3 +1,4 @@
+import argparse
 from enum import Enum
 
 class ParameterError(Exception):
@@ -152,8 +153,7 @@ class ATM(object):
         self._account = None
         self._state = ATMState.CARD_NOT_PRESENT
 
-def test():
-    USE_USER_INPUT = True
+def test(use_user_input=False):
     bank = Bank()
     bank.add_account(Account(bank.get_account_uuid(), 10))
     bank.add_account(Account(bank.get_account_uuid(), 20))
@@ -188,7 +188,7 @@ def test():
 
     while True:
         try:
-            if USE_USER_INPUT:
+            if use_user_input:
                 user_input = input()
             else:
                 if len(test_inputs) == 0:
@@ -222,7 +222,13 @@ def test():
 
 
 def main():
-    test()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--use-user-input',
+                        type=bool, 
+                        default=False,
+                        help='user user input for test. T/F')
+    args = parser.parse_args()
+    test(args.use_user_input)
 
 if __name__ == "__main__":
     main()
